@@ -87,9 +87,8 @@
     </div>
 
     <script>
-        // ЗАМЕНИТЕ АДРЕС НИЖЕ НА ВАШУ ССЫЛКУ ИЗ RENDER (когда запустите проект на Render)
-        // Прокси "cors-anywhere" в начале строки помогает стабильно отправлять запросы из РФ
-        const BACKEND_URL = "https://herokuapp.com";
+        // Ссылка объединяет полностью автоматический прокси allorigins и ваш рабочий бэкэнд на Render
+        const BACKEND_URL = "https://allorigins.win";
 
         function toggleModal(id, show) {
             const modal = document.getElementById(id);
@@ -120,7 +119,7 @@
                 alert(data.message);
                 if(data.success) { document.getElementById('regForm').reset(); toggleModal('regModal', false); }
             })
-            .catch(() => alert('Ошибка отправки. Попробуйте еще раз через минуту.'))
+            .catch(() => alert('Ошибка отправки. Сервер Render просыпается, попробуйте еще раз через 30 секунд.'))
             .finally(() => { btn.disabled = false; btn.innerText = 'Отправить анкету'; });
         }
 
@@ -157,7 +156,7 @@
                     }
                 }
             })
-            .catch(() => alert('Ошибка запроса статуса.'));
+            .catch(() => alert('Ошибка запроса статуса. Сервер Render просыпается, повторите попытку.'));
         }
     </script>
 </body>
