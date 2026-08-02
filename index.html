@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <!-- ОКНО ЗАЯВКИ -->
+    <!-- МОДАЛКА ЗАЯВКИ -->
     <div class="modal-overlay" id="regModal" onclick="closeModalOnOverlay(event, 'regModal')">
         <div class="modal-window">
             <button class="close-btn" onclick="toggleModal('regModal', false)">&times;</button>
@@ -73,11 +73,11 @@
         </div>
     </div>
 
-    <!-- ОКНО ПРОВЕРКИ СТАТУСА -->
+    <!-- МОДАЛКА СТАТУСА -->
     <div class="modal-overlay" id="statusModal" onclick="closeModalOnOverlay(event, 'statusModal')">
         <div class="modal-window">
             <button class="close-btn" onclick="toggleModal('statusModal', false)">&times;</button>
-            <div style="font-size:1.6rem; margin-bottom:20px; text-align:center; font-weight:bold;">Проверить по нику</div>
+            <div style="font-size:1.6rem; margin-bottom:20px; text-align:center; font-weight:bold;">Проверить статус</div>
             <form id="statusForm" onsubmit="checkStatus(event)">
                 <input type="text" id="checkNick" class="input-field" placeholder="Введите ваш ник в Minecraft" required>
                 <button type="submit" class="submit-btn" id="subBtnStatus">Проверить</button>
@@ -87,8 +87,9 @@
     </div>
 
     <script>
-        // СЮДА ВСТАВИТЕ ВАШУ ССЫЛКУ С GLITCH (КОГДА ЗАПУСТИТЕ ТАМ ПРОЕКТ)
-        const BACKEND_URL = "https://glitch.me";
+        // ЗАМЕНИТЕ АДРЕС НИЖЕ НА ВАШУ ССЫЛКУ ИЗ RENDER (когда запустите проект на Render)
+        // Прокси "cors-anywhere" в начале строки помогает стабильно отправлять запросы из РФ
+        const BACKEND_URL = "https://herokuapp.com";
 
         function toggleModal(id, show) {
             const modal = document.getElementById(id);
@@ -119,7 +120,7 @@
                 alert(data.message);
                 if(data.success) { document.getElementById('regForm').reset(); toggleModal('regModal', false); }
             })
-            .catch(() => alert('Ошибка отправки. Проверьте ссылку BACKEND_URL.'))
+            .catch(() => alert('Ошибка отправки. Попробуйте еще раз через минуту.'))
             .finally(() => { btn.disabled = false; btn.innerText = 'Отправить анкету'; });
         }
 
@@ -151,7 +152,7 @@
                         output.innerText = 'Статус: Отказано ❌';
                         output.classList.add('status-rejected');
                     } else if (data.status === 'Принят') {
-                        output.innerText = 'Статус: Принят! Вы на сервере! 🎉';
+                        output.innerText = 'Статус: Принят! Ты внесен в белый список. 🎉';
                         output.classList.add('status-accepted');
                     }
                 }
