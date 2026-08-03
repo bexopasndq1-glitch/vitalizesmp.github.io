@@ -5,284 +5,156 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VitalizeSMP — Официальный сайт</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body {
             background: linear-gradient(135deg, #0093E9 0%, #80D0C7 50%, #0000FF 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            padding: 20px;
+            background-attachment: fixed; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center; color: white; padding: 20px;
         }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            color: #ffffff;
-            text-shadow: 3px 3px 0px #000;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
+        .container { width: 100%; max-width: 500px; text-align: center; display: flex; flex-direction: column; }
+        h1 { font-size: 3.5rem; color: #ffffff; text-shadow: 3px 3px 0px #000; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; }
         .block-card {
-            background-color: #000000;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            background-color: #000000; border-radius: 15px; padding: 25px; margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 2px solid rgba(255, 255, 255, 0.1);
         }
-
-        .ip-title {
-            color: #0093E9;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .ip-address {
-            color: #ffffff;
-            font-size: 1.8rem;
-            font-family: monospace;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .ip-address:hover {
-            transform: scale(1.03);
-        }
-
+        .ip-title { color: #0093E9; font-size: 1.2rem; text-transform: uppercase; font-weight: bold; margin-bottom: 8px; }
+        .ip-address { color: #ffffff; font-size: 1.8rem; font-family: monospace; cursor: pointer; word-break: break-all; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 15px; width: 100%; }
         .open-modal-btn {
-            width: 100%;
-            padding: 20px;
-            background-color: #000000;
-            color: #ffffff;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            transition: all 0.2s ease;
+            flex: 1; padding: 18px; background-color: #000; color: #fff; font-size: 1.1rem;
+            font-weight: bold; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4); transition: all 0.2s;
         }
-
-        .open-modal-btn:hover {
-            border-color: #0093E9;
-            color: #0093E9;
-            transform: scale(1.02);
+        .open-modal-btn:hover { border-color: #0093E9; color: #0093E9; transform: scale(1.02); }
+        .social-btn {
+            display: block; width: 100%; padding: 18px; color: #ffffff; font-size: 1.1rem; font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; cursor: pointer; text-decoration: none;
+            margin-bottom: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); transition: all 0.2s ease; text-align: center;
         }
-
+        .social-btn span { font-size: 0.9rem; font-weight: normal; opacity: 0.8; margin-left: 5px; display: inline-block; }
+        .btn-discord { background-color: #5865F2; }
+        .btn-discord:hover { background-color: #4752C4; transform: scale(1.02); }
+        .btn-telegram { background-color: #24A1DE; margin-bottom: 25px; }
+        .btn-telegram:hover { background-color: #1D84B9; transform: scale(1.02); }
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            padding: 20px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8);
+            display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 15px;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-window {
-            background-color: #000000;
-            width: 100%;
-            max-width: 450px;
-            border-radius: 15px;
-            padding: 30px;
-            border: 2px solid #0093E9;
-            position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-window {
-            transform: translateY(0);
-        }
-
-        .modal-title {
-            font-size: 1.8rem;
-            color: #ffffff;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #888;
-            font-size: 1.8rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .close-btn:hover {
-            color: #fff;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #333;
-            border-radius: 8px;
-            background-color: #111;
-            color: #fff;
-            font-size: 1rem;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: #0093E9;
-        }
-
-        textarea.input-field {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(90deg, #0093E9, #0000FF);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .submit-btn:hover {
-            opacity: 0.9;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-window { background-color: #000; width: 100%; max-width: 450px; border-radius: 15px; padding: 30px; border: 2px solid #0093E9; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #888; font-size: 1.8rem; cursor: pointer; }
+        .close-btn:hover { color: #fff; }
+        .input-field { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #333; border-radius: 8px; background-color: #111; color: #fff; font-size: 1rem; }
+        .input-field:focus { border-color: #0093E9; outline: none; }
+        .submit-btn { width: 100%; padding: 15px; background: linear-gradient(90deg, #0093E9, #0000FF); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+        .status-result { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: bold; display: none; text-align: center; }
+        .status-waiting { background-color: #332200; color: #ffcc00; }
+        .status-accepted { background-color: #003311; color: #00ff66; }
+        .status-rejected { background-color: #330000; color: #ff3333; }
+        @media (max-width: 400px) { .btn-group { flex-direction: column; gap: 10px; } h1 { font-size: 2.5rem; } .social-btn span { display: block; margin-left: 0; margin-top: 4px; } }
     </style>
 </head>
 <body>
-
     <div class="container">
         <h1>VitalizeSMP</h1>
-
         <div class="block-card">
             <div class="ip-title">Айпи сервера:</div>
-            <div class="ip-address" onclick="navigator.clipboard.writeText('65.21.16.190:25854'); alert('IP скопирован!');">
-                65.21.16.190:25854
-            </div>
+            <div class="ip-address" onclick="navigator.clipboard.writeText('vitalizesmp.ru'); alert('IP скопирован!');">vitalizesmp.ru</div>
         </div>
-
-        <button class="open-modal-btn" onclick="toggleModal(true)">Подать заявку</button>
+        <div class="btn-group">
+            <button class="open-modal-btn" onclick="toggleModal('regModal', true)">Подать заявку</button>
+            <button class="open-modal-btn" onclick="toggleModal('statusModal', true)">Статус заявки</button>
+        </div>
+        <a href="https://discord.gg" target="_blank" class="social-btn btn-discord">
+            Наш Discord <span>(просматривать заявки там)</span>
+        </a>
+        <a href="https://t.me" target="_blank" class="social-btn btn-telegram">Наш Telegram</a>
     </div>
-
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+    <div class="modal-overlay" id="regModal" onclick="closeModalOnOverlay(event, 'regModal')">
         <div class="modal-window">
-            <button class="close-btn" onclick="toggleModal(false)">&times;</button>
-            <div class="modal-title">Анкета игрока</div>
-            
-            <form id="applicationForm" onsubmit="sendToDiscord(event)">
-                <input type="text" id="nickname" class="input-field" placeholder="Ваш ник в Minecraft" required>
-                <input type="number" id="age" class="input-field" placeholder="Ваш возраст" required>
-                <textarea id="about" class="input-field" placeholder="Расскажите о себе и почему хотите к нам?" required></textarea>
-                <button type="submit" class="submit-btn" id="subBtn">Отправить заявку</button>
+            <button class="close-btn" onclick="toggleModal('regModal', false)">&times;</button>
+            <div style="font-size:1.6rem; margin-bottom:20px; text-align:center; font-weight:bold;">Подача заявки</div>
+            <form id="regForm" onsubmit="sendApplication(event)">
+                <input type="text" id="regNick" class="input-field" placeholder="Ваш ник в Minecraft" required>
+                <input type="number" id="regAge" class="input-field" placeholder="Ваш возраст" required>
+                <textarea id="regAbout" class="input-field" style="resize:vertical; min-height:90px;" placeholder="Расскажите о себе и почему хотите к нам?" required></textarea>
+                <button type="submit" class="submit-btn" id="subBtnReg">Отправить анкету</button>
             </form>
         </div>
     </div>
-
+    <div class="modal-overlay" id="statusModal" onclick="closeModalOnOverlay(event, 'statusModal')">
+        <div class="modal-window">
+            <button class="close-btn" onclick="toggleModal('statusModal', false)">&times;</button>
+            <div style="font-size:1.6rem; margin-bottom:20px; text-align:center; font-weight:bold;">Проверить статус</div>
+            <form id="statusForm" onsubmit="checkStatus(event)">
+                <input type="text" id="checkNick" class="input-field" placeholder="Введите ваш ник в Minecraft" required>
+                <button type="submit" class="submit-btn">Проверить</button>
+            </form>
+            <div id="statusOutput" class="status-result"></div>
+        </div>
+    </div>
     <script>
-        function toggleModal(show) {
-            const overlay = document.getElementById('modalOverlay');
-            if (show) {
-                overlay.classList.add('active');
-            } else {
-                overlay.classList.remove('active');
-            }
+        // Ссылка вашего вебхука из Дискорда, разделенная пополам для безопасности
+        const PART1 = "https://discord.com";
+        const PART2 = "ВСТАВЬТЕ_ВТОРУЮ_ПОЛОВИНУ_ВЕБХУКА";
+
+        const GITHUB_USER = window.location.hostname.includes('github.io') ? window.location.hostname.split('.')[0] : "bexopasndq1-glitch";
+        function toggleModal(id, show) {
+            const modal = document.getElementById(id);
+            if (show) modal.classList.add('active');
+            else modal.classList.remove('active');
         }
-
-        function closeModalOnOverlay(event) {
-            const overlay = document.getElementById('modalOverlay');
-            if (event.target === overlay) {
-                toggleModal(false);
-            }
-        }
-
-        // Логика отправки заявки в Discord
-        function sendToDiscord(event) {
-            event.preventDefault();
-            
-            const btn = document.getElementById('subBtn');
-            btn.disabled = true;
-            btn.innerText = 'Отправка...';
-
-            const nickname = document.getElementById('nickname').value;
-            const age = document.getElementById('age').value;
-            const about = document.getElementById('about').value;
-
-            // СЮДА ВСТАВИТЬ ССЫЛКУ ИЗ ДИСКОРДА (Внутри кавычек)
-            const webhookUrl = "https://discord.com/api/webhooks/1533404314003964004/i8Yvk4xWGn5SN1wJk8pyzt7DmcQhrs6pU1Zkdzxq-VbC9j59YRC4s3hXkmV2oJcLDqDM";
-
-            const requestBody = {
-                username: "VitalizeSMP Заявки",
-                embeds: [{
-                    title: "Новая заявка на сервер!",
-                    color: 37769, 
-                    fields: [
-                        { name: "Ник в игре:", value: nickname, inline: true },
-                        { name: "Возраст:", value: age, inline: true },
-                        { name: "О себе / Почему мы:", value: about }
-                    ],
-                    footer: { text: "Форма на сайте vitalizesmp.ru" },
-                    timestamp: new Date()
-                }]
-            };
-
-            fetch(webhookUrl, {
+        function closeModalOnOverlay(e, id) { if (e.target === document.getElementById(id)) toggleModal(id, false); }
+        function sendApplication(e) {
+            e.preventDefault();
+            const btn = document.getElementById('subBtnReg');
+            btn.disabled = true; btn.innerText = 'Отправка...';
+            const nick = document.getElementById('regNick').value;
+            const age = document.getElementById('regAge').value;
+            const about = document.getElementById('regAbout').value;
+            fetch(PART1 + PART2, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify({
+                    username: "VitalizeSMP Заявки",
+                    embeds: [{
+                        title: "📝 Новая заявка на сервер!", color: 37769,
+                        fields: [
+                            { name: "Ник в игре:", value: nick, inline: true },
+                            { name: "Возраст:", value: age, inline: true },
+                            { name: "О себе / Почему мы:", value: about }
+                        ],
+                        timestamp: new Date()
+                    }]
+                })
             })
             .then(() => {
-                alert('Заявка успешно отправлена');
-                document.getElementById('applicationForm').reset();
-                toggleModal(false);
+                alert('Заявка успешно отправлена! Администрация рассмотрит её в ближайшее время.');
+                document.getElementById('regForm').reset();
+                toggleModal('regModal', false);
             })
-            .catch(err => {
-                alert('Ошибка при отправке. Проверьте ссылку вебхука.');
-                console.error(err);
+            .catch(() => alert('Ошибка отправки. Проверьте ссылки вебхука.'))
+            .finally(() => { btn.disabled = false; btn.innerText = 'Отправить анкету'; });
+        }
+        function checkStatus(e) {
+            e.preventDefault();
+            const nick = document.getElementById('checkNick').value.toLowerCase().trim();
+            const output = document.getElementById('statusOutput');
+            output.style.display = 'block'; output.className = 'status-result';
+            fetch(`https://githubusercontent.com{GITHUB_USER}/vitalizesmp.github.io/main/whitelist.txt?t=${Date.now()}`)
+            .then(res => { if(!res.ok) return ""; return res.text(); })
+            .then(text => {
+                const lines = text.toLowerCase().split('\n').map(l => l.trim());
+                if (lines.includes(nick)) {
+                    output.innerText = "Статус: Принят! Ты внесен в Whitelist сервера. 🎉";
+                    output.className = 'status-result status-accepted';
+                } else {
+                    output.innerText = "Статус: Ожидание рассмотрения или Отказано ⏳";
+                    output.className = 'status-result status-waiting';
+                }
             })
-            .finally(() => {
-                btn.disabled = false;
-                btn.innerText = 'Отправить заявку';
-            });
+            .catch(() => { output.innerText = "Ошибка проверки статуса."; output.className = 'status-result status-rejected'; });
         }
     </script>
-
 </body>
 </html>
