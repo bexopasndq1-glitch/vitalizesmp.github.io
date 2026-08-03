@@ -55,15 +55,15 @@
         <h1>VitalizeSMP</h1>
         <div class="block-card">
             <div class="ip-title">Айпи сервера:</div>
-            <div class="ip-address" onclick="navigator.clipboard.writeText('65.21.16.190:25854'); alert('IP скопирован!');">65.21.16.190:25854</div>
+            <div class="ip-address" onclick="navigator.clipboard.writeText('vitalizesmp.ru'); alert('IP скопирован!');">vitalizesmp.ru</div>
         </div>
         <div class="btn-group">
             <button class="open-modal-btn" onclick="toggleModal('regModal', true)">Подать заявку</button>
         </div>
-        <a href="https://discord.gg/ebeDg3hDw" target="_blank" class="social-btn btn-discord">
+        <a href="https://discord.gg" target="_blank" class="social-btn btn-discord">
             Наш Discord <span>(просматривать заявки там)</span>
         </a>
-        <a href="https://t.me/+46G63wQ8Di44YTMy" target="_blank" class="social-btn btn-telegram">Наш Telegram</a>
+        <a href="https://t.me" target="_blank" class="social-btn btn-telegram">Наш Telegram</a>
     </div>
 
     <div class="modal-overlay" id="regModal" onclick="closeModalOnOverlay(event, 'regModal')">
@@ -73,17 +73,18 @@
             <form id="regForm" onsubmit="sendApplication(event)">
                 <input type="text" id="regNick" class="input-field" placeholder="Ваш ник в Minecraft" required>
                 <input type="number" id="regAge" class="input-field" placeholder="Ваш возраст" required>
+                <!-- Необязательное поле для Discord -->
+                <input type="text" id="regDiscord" class="input-field" placeholder="Ваш Discord ник (желательно)">
                 <textarea id="regAbout" class="input-field" style="resize:vertical; min-height:90px;" placeholder="Расскажите о себе и почему хотите к нам?" required></textarea>
-                <input type="discord" id="regDis" class="input-field" placeholder="Ваш Дискорд (необязательно но желательно для связи о заявке)">
                 <button type="submit" class="submit-btn" id="subBtnReg">Отправить анкету</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Не забудьте вставить сюда две половинки ссылки вебхука
+        // Не забудьте вставить сюда две половинки вашей ссылки вебхука из Дискорда
         const PART1 = "https://discord.com";
-        const PART2 = "/api/webhooks/1533404314003964004/i8Yvk4xWGn5SN1wJk8pyzt7DmcQhrs6pU1Zkdzxq-VbC9j59YRC4s3hXkmV2oJcLDqDM";
+        const PART2 = "ВСТАВЬТЕ_ВТОРУЮ_ПОЛОВИНУ_ВЕБХУКА";
 
         function toggleModal(id, show) {
             const modal = document.getElementById(id);
@@ -95,10 +96,15 @@
             e.preventDefault();
             const btn = document.getElementById('subBtnReg');
             btn.disabled = true; btn.innerText = 'Отправка...';
+            
             const nick = document.getElementById('regNick').value;
             const age = document.getElementById('regAge').value;
+            const discordVal = document.getElementById('regDiscord').value.trim();
             const about = document.getElementById('regAbout').value;
-            const about = document.getElementById('regDis').value;
+
+            // Если дискорд не ввели, пишем "Не указан"
+            const discordUser = discordVal ? discordVal : "Не указан";
+
             fetch(PART1 + PART2, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -109,8 +115,8 @@
                         fields: [
                             { name: "Ник в игре:", value: nick, inline: true },
                             { name: "Возраст:", value: age, inline: true },
-                            { name: "О себе / Почему мы:", value: about },
-                            { name: "Ваш дискорд (необязательно но желательно):", value: dc, inline: true }
+                            { name: "Discord аккаунт:", value: discordUser, inline: true },
+                            { name: "О себе / Почему мы:", value: about }
                         ],
                         timestamp: new Date()
                     }]
@@ -121,7 +127,7 @@
                 document.getElementById('regForm').reset();
                 toggleModal('regModal', false);
             })
-            .catch(() => alert('Ошибка отправки. Проверьте ссылки вебхука.'))
+            .catch(() => alert('Ошибка отправки. Проверьте правильность частей вебхука в коде.'))
             .finally(() => { btn.disabled = false; btn.innerText = 'Отправить анкету'; });
         }
     </script>
