@@ -47,11 +47,7 @@
         .input-field { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #333; border-radius: 8px; background-color: #111; color: #fff; font-size: 1rem; }
         .input-field:focus { border-color: #0093E9; outline: none; }
         .submit-btn { width: 100%; padding: 15px; background: linear-gradient(90deg, #0093E9, #0000FF); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
-        .status-result { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: bold; display: none; text-align: center; }
-        .status-waiting { background-color: #332200; color: #ffcc00; }
-        .status-accepted { background-color: #003311; color: #00ff66; }
-        .status-rejected { background-color: #330000; color: #ff3333; }
-        @media (max-width: 400px) { .btn-group { flex-direction: column; gap: 10px; } h1 { font-size: 2.5rem; } .social-btn span { display: block; margin-left: 0; margin-top: 4px; } }
+        @media (max-width: 400px) { h1 { font-size: 2.5rem; } .social-btn span { display: block; margin-left: 0; margin-top: 4px; } }
     </style>
 </head>
 <body>
@@ -63,13 +59,13 @@
         </div>
         <div class="btn-group">
             <button class="open-modal-btn" onclick="toggleModal('regModal', true)">Подать заявку</button>
-            <button class="open-modal-btn" onclick="toggleModal('statusModal', true)">Статус заявки</button>
         </div>
         <a href="https://discord.gg/ebeDg3hDw" target="_blank" class="social-btn btn-discord">
             Наш Discord <span>(просматривать заявки там)</span>
         </a>
         <a href="https://t.me/+46G63wQ8Di44YTMy" target="_blank" class="social-btn btn-telegram">Наш Telegram</a>
     </div>
+
     <div class="modal-overlay" id="regModal" onclick="closeModalOnOverlay(event, 'regModal')">
         <div class="modal-window">
             <button class="close-btn" onclick="toggleModal('regModal', false)">&times;</button>
@@ -82,23 +78,12 @@
             </form>
         </div>
     </div>
-    <div class="modal-overlay" id="statusModal" onclick="closeModalOnOverlay(event, 'statusModal')">
-        <div class="modal-window">
-            <button class="close-btn" onclick="toggleModal('statusModal', false)">&times;</button>
-            <div style="font-size:1.6rem; margin-bottom:20px; text-align:center; font-weight:bold;">Проверить статус</div>
-            <form id="statusForm" onsubmit="checkStatus(event)">
-                <input type="text" id="checkNick" class="input-field" placeholder="Введите ваш ник в Minecraft" required>
-                <button type="submit" class="submit-btn">Проверить</button>
-            </form>
-            <div id="statusOutput" class="status-result"></div>
-        </div>
-    </div>
+
     <script>
-        // Ссылка вашего вебхука из Дискорда, разделенная пополам для безопасности
+        // Не забудьте вставить сюда две половинки ссылки вебхука
         const PART1 = "https://discord.com";
         const PART2 = "/api/webhooks/1533404314003964004/i8Yvk4xWGn5SN1wJk8pyzt7DmcQhrs6pU1Zkdzxq-VbC9j59YRC4s3hXkmV2oJcLDqDM";
 
-        const GITHUB_USER = window.location.hostname.includes('github.io') ? window.location.hostname.split('.')[0] : "bexopasndq1-glitch";
         function toggleModal(id, show) {
             const modal = document.getElementById(id);
             if (show) modal.classList.add('active');
@@ -135,25 +120,6 @@
             })
             .catch(() => alert('Ошибка отправки. Проверьте ссылки вебхука.'))
             .finally(() => { btn.disabled = false; btn.innerText = 'Отправить анкету'; });
-        }
-        function checkStatus(e) {
-            e.preventDefault();
-            const nick = document.getElementById('checkNick').value.toLowerCase().trim();
-            const output = document.getElementById('statusOutput');
-            output.style.display = 'block'; output.className = 'status-result';
-            fetch(`https://githubusercontent.com{GITHUB_USER}/vitalizesmp.github.io/main/whitelist.txt?t=${Date.now()}`)
-            .then(res => { if(!res.ok) return ""; return res.text(); })
-            .then(text => {
-                const lines = text.toLowerCase().split('\n').map(l => l.trim());
-                if (lines.includes(nick)) {
-                    output.innerText = "Статус: Принят! Ты внесен в Whitelist сервера. 🎉";
-                    output.className = 'status-result status-accepted';
-                } else {
-                    output.innerText = "Статус: Ожидание рассмотрения или Отказано ⏳";
-                    output.className = 'status-result status-waiting';
-                }
-            })
-            .catch(() => { output.innerText = "Ошибка проверки статуса."; output.className = 'status-result status-rejected'; });
         }
     </script>
 </body>
